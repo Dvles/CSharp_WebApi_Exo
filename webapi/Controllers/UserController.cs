@@ -35,6 +35,7 @@ namespace webapi.Controllers
 			catch (SqlException)
 			{
 				return StatusCode(500); // Return 500 Internal Server Error in case of a SQL exception
+
 			}
 		}
 
