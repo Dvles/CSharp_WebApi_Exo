@@ -2,6 +2,7 @@
 using Common.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using webapi.Mappers;
 using webapi.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -22,18 +23,19 @@ namespace webapi.Controllers
 		// GET: api/<UserrController>
 		[HttpGet]
 		[ProducesResponseType<IEnumerable<UserDTO>>(200)]
-		public IEnumerable<string> Get()
+		[ProducesResponseType(500)]
+		public IActionResult Get()
 		{
 			try
 			{
-				IEnumerable<UserDTO> model = _userService(Get).Select(BLL => BLL.ToDTO());
-				return new string[] { "value1", "value2" };
+
+				IEnumerable<UserDTO> model = _userService.Get().Select(user => user.ToDTO());
+				return Ok(model); // Return the list of UserDTOs
 			}
 			catch (SqlException)
 			{
-				return StatusCode(500);
+				return StatusCode(500); // Return 500 Internal Server Error in case of a SQL exception
 			}
-
 		}
 
 		// GET api/<UserrController>/5
