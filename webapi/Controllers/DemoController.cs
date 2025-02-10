@@ -45,6 +45,8 @@ namespace webapi.Controllers
 		}
 
 		[HttpGet("{id}")]
+		[ProducesResponseType<Student>(200)]
+		[ProducesResponseType<Student>(404)]
 		public ActionResult<List<Student>> Get(int id)
 		{
 			Student model = _list.Where (st => st.Student_Id == id).SingleOrDefault();
@@ -56,5 +58,16 @@ namespace webapi.Controllers
 			// return NotFound();
 			return StatusCode(404);
 		}
+
+		[HttpPost]
+		[ProducesResponseType<Student>(201)]
+		public IActionResult Post(Student student)
+		{
+			int id = _list.Max(st =>st.Student_Id) + 1;
+			student.Student_Id = id;
+			_list.Add(student);
+			return CreatedAtAction(nameof(Get), new { id }, student);
+		}
+
 	}
 }
