@@ -48,7 +48,13 @@ namespace webapi.Controllers
 		public ActionResult<List<Student>> Get(int id)
 		{
 			Student model = _list.Where (st => st.Student_Id == id).SingleOrDefault();
-			return Ok(model);
+			if (model is not null)
+			{
+				return Ok(model);
+
+			}
+			// return NotFound();
+			return StatusCode(404);
 		}
 	}
 }
