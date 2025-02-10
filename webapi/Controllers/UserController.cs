@@ -2,6 +2,7 @@
 using Common.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using System.Linq.Expressions;
 using webapi.Mappers;
 using webapi.Models;
 
@@ -20,7 +21,7 @@ namespace webapi.Controllers
 		{
 			_userService = userService;
 		}
-		// GET: api/<UserrController>
+		// GET: api/<UserController>
 		[HttpGet]
 		[ProducesResponseType<IEnumerable<UserDTO>>(200)]
 		[ProducesResponseType(500)]
@@ -39,26 +40,37 @@ namespace webapi.Controllers
 			}
 		}
 
-		// GET api/<UserrController>/5
+		// GET api/<UserController>/5
 		[HttpGet("{id}")]
-		public string Get(int id)
+		[ProducesResponseType<UserDTO>(200)]
+		[ProducesResponseType(404)]
+		public ActionResult<UserDTO> Get(Guid id)
 		{
-			return "value";
+			User user = _userService.Get(id);
+
+			if (user == null)
+			{
+				return NotFound();
+			}
+
+
+			return Ok(user.ToDTO());
 		}
 
-		// POST api/<UserrController>
+
+		// POST api/<UserController>
 		[HttpPost]
 		public void Post([FromBody] string value)
 		{
 		}
 
-		// PUT api/<UserrController>/5
+		// PUT api/<UserController>/5
 		[HttpPut("{id}")]
 		public void Put(int id, [FromBody] string value)
 		{
 		}
 
-		// DELETE api/<UserrController>/5
+		// DELETE api/<UserController>/5
 		[HttpDelete("{id}")]
 		public void Delete(int id)
 		{
