@@ -7,5 +7,9 @@ namespace webapi.Controllers
 	[ApiController]
 	public class DemoController : ControllerBase
 	{
+		public IActionResult TestApi()
+		{
+			return Ok();
+		}
 	}
 }
