@@ -1,6 +1,7 @@
 ﻿using BLL.Entities;
 using Common.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,9 +20,19 @@ namespace webapi.Controllers
 		}
 		// GET: api/<UserrController>
 		[HttpGet]
+		[ProducesResponseType<IEnumerable<UserDTO>>(200)]
 		public IEnumerable<string> Get()
 		{
-			return new string[] { "value1", "value2" };
+			try
+			{
+				IEnumerable<UserDTO> model = _userService(Get).Select(BLL => BLL.ToDTO());
+				return new string[] { "value1", "value2" };
+			}
+			catch (SqlException)
+			{
+				return StatusCode(500);
+			}
+
 		}
 
 		// GET api/<UserrController>/5
