@@ -7,7 +7,8 @@ namespace webapi.Controllers
 	[ApiController]
 	public class DemoController : ControllerBase
 	{
-		public IActionResult TestApi()
+		[HttpGet("")]
+		public IActionResult Get()
 		{
 			return Ok();
 		}
