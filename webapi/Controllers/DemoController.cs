@@ -43,5 +43,12 @@ namespace webapi.Controllers
 			List<Student> model = _list;
 			return Ok(model);
 		}
+
+		[HttpGet("")]
+		public ActionResult<List<Student>> Get(int id)
+		{
+			Student model = _list.Where (st => st.Student_Id == id).SingleOrDefault();
+			return Ok(model);
+		}
 	}
 }
