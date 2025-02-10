@@ -7,10 +7,16 @@ namespace webapi.Controllers
 	[ApiController]
 	public class DemoController : ControllerBase
 	{
-		[HttpGet("")]
-		public IActionResult Get()
+		private static List<string> _list = new List<string>
 		{
-			return Ok();
+			"Charifa", "Khaoula", "Mélusine", "Dorothée", "Jenny", "Marwa", "Anaïs", "Emilie", "Amalia", "Leslie", "Debby"
+		};
+		
+		[HttpGet("")]
+		public ActionResult<List<string>> Get()
+		{
+			List<string> model = _list;
+			return Ok(model);
 		}
 	}
 }
