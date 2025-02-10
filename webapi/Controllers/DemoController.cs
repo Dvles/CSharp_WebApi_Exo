@@ -101,5 +101,24 @@ namespace webapi.Controllers
 
 		}
 
+		[HttpDelete("{id}")]
+		[ProducesResponseType(204)]
+		public IActionResult Delete(int id)
+		{
+
+			try
+			{
+				Student model = _list.Where(st => st.Student_Id == id).SingleOrDefault();
+				if (model is null) throw new ArgumentOutOfRangeException(nameof(id));
+				_list.Remove(model);
+				return NoContent();
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				return NotFound();
+
+			}
+		}
+
 	}
 }
