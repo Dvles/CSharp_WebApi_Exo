@@ -63,10 +63,42 @@ namespace webapi.Controllers
 		[ProducesResponseType<Student>(201)]
 		public IActionResult Post(Student student)
 		{
-			int id = _list.Max(st =>st.Student_Id) + 1;
-			student.Student_Id = id;
-			_list.Add(student);
-			return CreatedAtAction(nameof(Get), new { id }, student);
+			try 
+			{
+				int id = _list.Max(st => st.Student_Id) + 1;
+				student.Student_Id = id;
+				_list.Add(student);
+				return CreatedAtAction(nameof(Get), new { id }, student);
+
+			} 
+			catch(Exception)
+			{
+				return StatusCode(415);
+			}
+		}
+
+		[HttpPut("{id}")]
+		[ProducesResponseType<Student>(201)]
+		[ProducesResponseType(415)]
+		public IActionResult Put(int id, Student student)
+		{
+			try{
+
+				Student model = _list.Where(st => st.Student_Id == id).SingleOrDefault();
+				if (model is null) throw new ArgumentOutOfRangeException(nameof(id));
+				model.First_Name = student.First_Name;
+				model.Last_Name = student.Last_Name;
+				return CreatedAtAction(nameof(Get), new { id }, model);
+
+			} catch (ArgumentOutOfRangeException)
+			{
+				return NotFound();
+			}
+			catch (ArgumentException)
+			{
+				return StatusCode(415); // incorrect mediatype return
+			}
+
 		}
 
 	}
