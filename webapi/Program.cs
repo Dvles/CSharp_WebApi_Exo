@@ -1,4 +1,8 @@
 
+using Common.Repositories;
+using BLL.Entities;
+using DAL.Entities;
+
 namespace webapi
 {
     public class Program
@@ -10,8 +14,16 @@ namespace webapi
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
+
+
+			//Ajout de nos services : Ceux de la BLL et ceux de la DAL
+			builder.Services.AddScoped<IUserRepository<BLL.Entities.User>, BLL.Services.UserService>();
+			builder.Services.AddScoped<IUserRepository<DAL.Entities.User>, DAL.Services.UserService>();
+			builder.Services.AddScoped<ICocktailRepository<BLL.Entities.Cocktail>, BLL.Services.CocktailService>();
+			builder.Services.AddScoped<ICocktailRepository<DAL.Entities.Cocktail>, DAL.Services.CocktailService>();
+
+			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+			builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();

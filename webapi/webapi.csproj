@@ -10,4 +10,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\I3-WAD24-ASP-DemoDAL-8\BLL\BLL.csproj" />
+    <ProjectReference Include="..\..\I3-WAD24-ASP-DemoDAL-8\Common\Common.csproj" />
+    <ProjectReference Include="..\..\I3-WAD24-ASP-DemoDAL-8\DAL\DAL.csproj" />
+  </ItemGroup>
+
 </Project>

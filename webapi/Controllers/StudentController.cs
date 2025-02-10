@@ -6,7 +6,7 @@ namespace webapi.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class DemoController : ControllerBase
+	public class StudentController : ControllerBase
 	{
 		private static List<Student> _list = new List<Student>
 		{
@@ -105,7 +105,6 @@ namespace webapi.Controllers
 		[ProducesResponseType(204)]
 		public IActionResult Delete(int id)
 		{
-
 			try
 			{
 				Student model = _list.Where(st => st.Student_Id == id).SingleOrDefault();
@@ -116,9 +115,7 @@ namespace webapi.Controllers
 			catch (ArgumentOutOfRangeException)
 			{
 				return NotFound();
-
 			}
 		}
-
 	}
 }
