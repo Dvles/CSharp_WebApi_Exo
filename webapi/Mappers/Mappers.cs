@@ -20,5 +20,20 @@ namespace webapi.Mappers
 		
 		}
 
+		public static User ToBLL(this UserPostDTO dto)
+		{
+			if (dto == null)
+				throw new ArgumentNullException(nameof(dto), "DTO cannot be null");
+
+			return new User
+			{
+				First_Name = dto.First_Name,
+				Last_Name = dto.Last_Name,
+				Email = dto.Email,
+				Password = dto.Password,
+				CreatedAt = DateTime.UtcNow
+			};
+		}
+
 	}
 }
