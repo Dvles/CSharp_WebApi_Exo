@@ -86,8 +86,25 @@ namespace webapi.Controllers
 
 		// DELETE api/<UserController>/5
 		[HttpDelete("{id}")]
-		public void Delete(int id)
+		[ProducesResponseType(204)]
+		[ProducesResponseType(404)]
+		[ProducesResponseType(500)]
+		public void Delete(Guid id)
 		{
+			try
+			{
+				UserDTO model = _userService.Get(id).ToDTO();
+				_userService.Delete(id);
+				return NoContent();
+			}
+			catch (SqlException)
+			{
+				return StatusCode(500);
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				return NotFound();
+			}
 		}
 	}
 }
