@@ -60,9 +60,32 @@ namespace webapi.Controllers
 
 		// POST api/<UserController>
 		[HttpPost]
-		public void Post([FromBody] string value)
+		[ProducesResponseType<User>(201)]
+		public IActionResult Insert(User user)
 		{
+			try
+			{
+				if (user == null)
+				{
+					return BadRequest("User data is required.");
+				}
+
+				Console.WriteLine($"Received user: {user.First_Name} {user.Last_Name}");
+
+				Guid id = _userService.Insert(user); // Call service
+				Console.WriteLine($"Inserted User ID: {id}");
+
+				user.User_Id = id; // Assign ID to user
+
+				return CreatedAtAction(nameof(Get), new { id }, user);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error: {ex.Message}");
+				return StatusCode(500, $"Internal Server Error: {ex.Message}");
+			}
 		}
+
 
 		// PUT api/<UserController>/5
 		[HttpPut("{id}")]
