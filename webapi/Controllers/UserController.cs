@@ -60,30 +60,21 @@ namespace webapi.Controllers
 
 		// POST api/<UserController>
 		[HttpPost]
-		[ProducesResponseType<User>(201)]
-		public IActionResult Insert(User user)
+		[ProducesResponseType<UserDTO>(201)]
+		public IActionResult Post([FromBody] UserPostDTO value)
 		{
 			try
 			{
-				if (user == null)
-				{
-					return BadRequest("User data is required.");
-				}
+				Guid id = _userService.Insert(value.ToBLL());
+				UserDTO model = _userService.Get(id).ToDTO();
+				return CreatedAtAction(nameof(Get), new { id }, model);
 
-				Console.WriteLine($"Received user: {user.First_Name} {user.Last_Name}");
-
-				Guid id = _userService.Insert(user); // Call service
-				Console.WriteLine($"Inserted User ID: {id}");
-
-				user.User_Id = id; // Assign ID to user
-
-				return CreatedAtAction(nameof(Get), new { id }, user);
 			}
-			catch (Exception ex)
+			catch
 			{
-				Console.WriteLine($"Error: {ex.Message}");
-				return StatusCode(500, $"Internal Server Error: {ex.Message}");
+				return StatusCode();
 			}
+
 		}
 
 
